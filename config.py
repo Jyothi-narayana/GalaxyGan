@@ -1,7 +1,7 @@
 class Config:
-    data_path = "/Users/ruru/Desktop/10_jpg"
+    data_path = "/Users/jyon/Gatech/6240/Project1/GalaxyGAN_python"
     model_path = "" #"./datasets/facades/checkpoint/model_100.ckpt"
-    output_path = "/Users/ruru/Desktop/10_jpg"
+    output_path = "/Users/jyon/Gatech/6240/Project1/GalaxyGAN_python"
 
     img_size = 424
     adjust_size = 500
@@ -11,6 +11,6 @@ class Config:
 
     learning_rate = 0.0002
     beta1 = 0.5
-    max_epoch = 200
+    max_epoch = 1
     L1_lambda = 100
     save_per_epoch=1
