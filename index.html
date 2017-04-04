@@ -49,10 +49,12 @@ Using log scale, we can define the reward/value function (in the context of rein
 <img src="./images/GAN_ValueFunction.png"></br>
 As shown in *add reference to 0*, for a fixed <MATH>G</MATH>, the optimum value of <MATH>D(x)</MATH> is given by:</br>
 <img class= "two-line" src="./images/opD.png"></br>
+Further the author proves that for <MATH>V(G, D)</MATH> to achieve it's global optimum, <MATH>p<sub>g</sub> = p<sub>data</sub> </MATH>. Putting it together, at the global optimum, <MATH>D<sup>*</sup><sub>G</sub> = 1/2</MATH>, which means that the G at this point is able to generate which D is not able to differentiate from orginal data. 
+<MATH>D</MATH> is trained using stochastic gradient <b>ascent</b>(since we are <MATH>max D </MATH>) while <MATH>G</MATH> is trained using stochastic gradient <b>descent</b>.
 </p>
 
 <h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Optimiazations</h3>
+<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Optimizations</h3>
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Applications</h3>
