@@ -7,6 +7,8 @@ import tensorflow as tf
 import numpy as np
 import time
 import sys
+import matplotlib.pyplot as plt
+import skimage.measure
 
 def prepocess_train(img, cond,):
     img = scipy.misc.imresize(img, [conf.adjust_size, conf.adjust_size])
@@ -22,6 +24,8 @@ def prepocess_train(img, cond,):
     cond = cond/127.5 - 1.
     img = img.reshape(1, conf.img_size, conf.img_size, conf.img_channel)
     cond = cond.reshape(1, conf.img_size, conf.img_size, conf.img_channel)
+    #viewer = ImageViewer(img)
+    #viewer = ImageViewer(img)
     return img,cond
 
 def prepocess_test(img, cond):
@@ -52,6 +56,8 @@ def train():
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
+    mpsnr_img = []
+    mpsnr_cond = []
     with tf.Session(config=config) as sess:
         if conf.model_path == "":
             sess.run(tf.initialize_all_variables())
@@ -71,15 +77,29 @@ def train():
             if (epoch + 1) % conf.save_per_epoch == 0:
                 save_path = saver.save(sess, conf.data_path + "/checkpoint/" + "model_%d.ckpt" % (epoch+1))
                 print "Model saved in file: %s" % save_path
+                mean_psnr_img = 0
+                mean_psnr_cond = 0
+                i = 0
                 test_data = data["test"]()
                 for img, cond, name in test_data:
                     pimg, pcond = prepocess_test(img, cond)
                     gen_img = sess.run(model.gen_img, feed_dict={model.image:pimg, model.cond:pcond})
                     gen_img = gen_img.reshape(gen_img.shape[1:])
                     gen_img = (gen_img + 1.) * 127.5
+                    #print type(img), type(cond), type(gen_img), img.shape, cond.shape, gen_img.shape, img.dtype, cond.dtype, gen_img.dtype
+                    mean_psnr_img = mean_psnr_img + skimage.measure.compare_psnr(img, gen_img.astype(np.uint8))
+                    mean_psnr_cond = mean_psnr_cond + skimage.measure.compare_psnr(cond, gen_img.astype(np.uint8))
                     image = np.concatenate((gen_img, cond), axis=1).astype(np.int)
+                    i = i + 1
                     imsave(image, conf.output_path + "/%s" % name)
-
+                mean_psnr_img = mean_psnr_img/i
+                mpsnr_img.append(mean_psnr_img)
+                mean_psnr_cond = mean_psnr_cond/i
+                mpsnr_cond.append(mean_psnr_cond)
+        print mpsnr_cond
+        print mpsnr_img
+        plt.plot(mpsnr_cond)
+        plt.show()
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == 'gpu=':
         os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"   # see issue #152
