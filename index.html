@@ -28,11 +28,19 @@
       <section id="main_content">
         
 <p>Humans learn by observing and experiencing the physical world. Our brains are very good at prediction and aggregation - if shown 10 different kind of pens, and if presented with a different pen, we can easily identify it as a pen. If asked to imagine a pen, we would imagine one which may not look exactly like any of the ones seen in the past but would still can be classified as a legitimate pen. This task of learning features for a category is one of the prime goals of Machine Learning today. It is not restricted to just images, but can be extended to any form of media like audio, print etc. </p>
-<p>Adversarial networks have recently surfaced as a new way to train machines to generate data which is similar to the observed data in the world simply by observing it. This model, popularly known as Generative Adversarial Network (GAN), was proposed and published by Ian Goodfellow in 2016 *0 todo: refernce to paper*. GANs have produced great results in unsupervised and semisupervised learning domain *1 todo: refernce to paper*. </p>
+<p>Adversarial networks have recently surfaced as a new way to train machines to generate data which is similar to the observed data in the world simply by observing it. This model, popularly known as Generative Adversarial Network (GAN), was proposed and published by Ian Goodfellow in 2016 *0 todo: refernce to paper*. GANs have produced great results in unsupervised and semisupervised learning domain *1 todo: refernce to paper*. Through an innovative combination of computational graphs and game theory they showed that, given enough modeling power, two models fighting against each other would be able to co-train through plain old backpropagation. </p>
 <h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Architecture</h3>
 
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
+<p>So how exactly do they work? The two primary components are Generator (G) and Discriminator (D). D is trained to discriminate between real data and fake data. Here real data refers to the real world data in training and fake data is the data produced by G. With this framework, both are trained to be better at their job through back propogation and once trained, G is now able to produce data which is very similar to the training data. D is much easier to train than G, more on it below. The input to G can be anything, there have been experiments where a vector of random numbers have been used to produce an image. This truly proves that G has learnt the features of the data. Hence, a GAN consists of 5 main components:
+<ul>
+  <li>T, the real data</li>
+  <li>G, the generator</li>
+  <li>D, the discriminator</li>
+  <li>R, the random noise which is the input to G</li>
+  <li>A, the training loop which trains the models G and D make each better</li>
+</ul>
+</p>
 
 <h3>
 <a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating pages manually</h3>
