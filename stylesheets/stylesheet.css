@@ -85,6 +85,19 @@ section img {
   max-width: 100%
 }
 
+math {
+  font-style: italic;
+}
+
+img {
+  display: block;
+  margin: auto;
+}
+
+.two-line {
+  width: 50%;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
