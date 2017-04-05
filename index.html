@@ -85,7 +85,27 @@ Multiple optimization techniques have been proposed and shown to have practical 
 </p>
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Applications</h3>
-*TODO: First give varied applications of generative networks. Describe the problem of 4. *
+<p>
+  Generative adversarial network in general and GANs in particular have application in many different problems. To list a few:
+    <ul>
+      <li>
+        Model-based Reinforcement Learning: They find application in the context of RL for Time series data. GANs are emploed to generate future time series data and RL models are learnt based on this simulated data.
+      </li>
+      <li>
+        Semi-supervised Learning: This is the case when majority of the input data has missing labels. GANs have been known to learn and generate labels in this case which are then used by other ML algorithms which need majority of the labels to train.
+      </li>
+      <li>
+        Multi-modal input: When multiple output are acceptable for the same input. Traditional ML techniques which minimize the mean squared error do not give accurate results whereas GANs perform very well. An application is generating the next frame in video.
+      </li>
+    </ul>
+  </br>
+</p>
+<p>
+  A particular application of GANs which recently gained popularity is denoising of images. Relevant work in this, like *site references *, have shown promising results. Using GANs for recovering features in astrophysical image will be discussed in detail below.  
+</p>
+<p>
+  
+</p>
 <h3>
 <a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h3>
 <p> 
@@ -97,6 +117,8 @@ Multiple optimization techniques have been proposed and shown to have practical 
   <a href="https://arxiv.org/pdf/1701.00160.pdf">5: https://arxiv.org/pdf/1701.00160.pdf</a></br>
   <a href="https://people.csail.mit.edu/costis/simplified.pdf">6: https://people.csail.mit.edu/costis/simplified.pdf</a></br>
   <a href="http://int8.io/comparison-of-optimization-techniques-stochastic-gradient-descent-momentum-adagrad-and-adadelta/#Adam_8211_description">7: http://int8.io/comparison-of-optimization-techniques-stochastic-gradient-descent-momentum-adagrad-and-adadelta/#Adam_8211_description</a></br>
+  <a href="https://arxiv.org/pdf/1701.05957.pdf">8: https://arxiv.org/pdf/1701.05957.pdf</a></br>
+  <a href="https://arxiv.org/abs/1702.00403">9: https://arxiv.org/abs/1702.00403 </a></br>
 </p>
       </section>
     </div>
