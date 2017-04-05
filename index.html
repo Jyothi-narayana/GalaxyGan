@@ -126,13 +126,17 @@ Multiple optimization techniques have been proposed and shown to have practical 
   </figure>
   I used a similar model with modifications in T, used only 97 images and A, no cross validation with 87 training and 10 test images. Figure 3 *add reference to figure* shows the gradual change in image quality over 16 iterations. </br>
   <figure>
-    <img src="./images/ggan.png" alt="Generated image VS Degraded Input VS Original Input"/>
-    <figcaption>Figure 3: Generated image VS Degraded Input VS Original Input</figcaption>
+    <img src="./images/final_iteration.png" alt="Generated image VS Degraded Input VS Original Input"/>
+    <figcaption>Figure 3: Generated image VS Degraded Input VS Original Input over succeeding iterations. The degraded image and the original image remain the same over the iterations, they have been added to give a better comparison. Only the first column changes over iterations, showing that the generator is able to produce more noise free image over the training period.</figcaption>
+  </figure>
+  <figure>
+    <img src="./images/final_many.png" alt="Generated image VS Degraded Input VS Original Input"/>
+    <figcaption>Figure 4: Generated image VS Degraded Input VS Original Input at iteration # 14.</figcaption>
   </figure>
   I also plotted the Peak Signal Noise Ratio(PSNR) values over the 16 iterations. PSNR is a popular quantitative measure for image recovery (Xu et al. 2014) *add reference*.
   <figure>
     <img src="./images/plot.png" alt="Mean PSNR of GAN recovered VS Original Image"/>
-    <figcaption>Figure 4: Mean PSNR of GAN recovered VS Original Image</figcaption>
+    <figcaption>Figure 5: Mean PSNR of GAN recovered VS Original Image</figcaption>
   </figure>
 </p>
 <p>
