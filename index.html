@@ -28,7 +28,7 @@
       <section id="main_content">
         
 <p>Humans learn by observing and experiencing the physical world. Our brains are very good at prediction and aggregation - if shown 10 different kind of pens, and if presented with a different pen, we can easily identify it as a pen. If asked to imagine a pen, we would imagine one which may not look exactly like any of the ones seen in the past but would still can be classified as a legitimate pen. This task of learning features for a category is one of the prime goals of Machine Learning today. It is not restricted to just images, but can be extended to any form of media like audio, print etc. </p>
-<p>Adversarial networks have recently surfaced as a new way to train machines to generate data which is similar to the observed data in the world simply by observing it. This model, popularly known as Generative Adversarial Network (GAN), was proposed and published by Ian Goodfellow in 2016 *0 todo: refernce to paper*. GANs have produced great results in unsupervised and semisupervised learning domain *1 todo: refernce to paper*. Through an innovative combination of computational graphs and game theory they showed that, given enough modeling power, two models fighting against each other would be able to co-train through plain old backpropagation. </p>
+<p>Adversarial networks have recently surfaced as a new way to train machines to generate data which is similar to the observed data in the world simply by observing it. This model, popularly known as Generative Adversarial Network (GAN), was proposed and published by Ian Goodfellow in 2014 *0 todo: refernce to paper*. GANs have produced great results in unsupervised and semisupervised learning domain *1 todo: refernce to paper*. Through an innovative combination of computational graphs and game theory they showed that, given enough modeling power, two models fighting against each other would be able to co-train through plain old backpropagation. </p>
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Architecture</h3>
 
@@ -62,7 +62,7 @@ Multiple optimization techniques have been proposed and shown to have practical 
 <h4>DCGAN</h4><p>These are the models where instead of trainning a multilayer percepron architecture, a convolutional network is employed. The pooling layers are replaced by strided convolutions in generators and fractional-straided convolutions for generators. One of the first positive results for this architecture was published in *add refernce to 2*. This architecture has resulted in stable training across a range of datasets and allowed for training higher resolution and deeper generative networks. </br>
 <figure>
   <img src="./images/DCGAN_generator.png" alt="DCGAN generator example architecture"/>
-  <figcaption> Generator for DCGAN </figcaption>
+  <figcaption>Figure 1: Generator for DCGAN </figcaption>
 </figure>
 </p>
 </li>
@@ -101,10 +101,38 @@ Multiple optimization techniques have been proposed and shown to have practical 
   </br>
 </p>
 <p>
-  A particular application of GANs which recently gained popularity is denoising of images. Relevant work in this, like *site references *, have shown promising results. Using GANs for recovering features in astrophysical image will be discussed in detail below.  
+  A particular application of GANs which recently gained popularity is denoising of images. Relevant work in this, like *site references *, have shown promising results. One of the coolest application of GANs is presented by the authors of *add reference to GGAN*: recovering the features from astronomical images would help physicists to study existing data sets of astrophysical objects. I wouldn't be surprised if they were to discover new spcaial objects with these higher resolution images. </br>
+  The model used to achieve this feat is simple and the implementation employs all the optimizations *link to optimization section3*. It consists of
+  <ul>
+    <li>
+      T: 4,550 images of galaxies from the Sloan Digital Sky Survey Data Release 12 (York et al. 2000; Alam et al. 2015) *add refernce from the paper of the dataset* in the redshift range 0:01 < z < 0:02
+    </li>
+    <li>
+      G: a convolutional followed by a deconvolutional neural network
+    </li>
+    <li>
+      D: a convolutional neural network
+    </li>
+    <li>
+      R: artificial noise based on centuries of study on noise introduced by telescope and atmosphere
+    </li>
+    <li>
+      A: 10 fold cross validation with 4105 training images and 445 test images
+    </li>
+  </ul> 
+  <figure>
+    <img src="./images/ggan.png" alt="DCGAN generator example architecture"/>
+    <figcaption>Figure 2: GAN architecture used for learning features from astrophysical objects</figcaption>
+  </figure>
+  I used a similar model with modifications in T, used only 97 images and A, no cross validation with 87 training and 10 test images. Figure 3 *add reference to figure* shows the gradual change in image quality over 16 iterations. </br>
+  <figure>
+    <img src="./images/ggan.png" alt="Generated image VS Degraded Input VS Original Input"/>
+    <figcaption>Figure 3: Generated image VS Degraded Input VS Original Input</figcaption>
+  </figure>
+  I also plotted the Peak Signal Noise Ratio(PSNR) values over the 16 iterations. PSNR is a popular quantitative measure for image recovery (Xu et al. 2014) *add reference*.
 </p>
 <p>
-  
+
 </p>
 <h3>
 <a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h3>
@@ -119,6 +147,7 @@ Multiple optimization techniques have been proposed and shown to have practical 
   <a href="http://int8.io/comparison-of-optimization-techniques-stochastic-gradient-descent-momentum-adagrad-and-adadelta/#Adam_8211_description">7: http://int8.io/comparison-of-optimization-techniques-stochastic-gradient-descent-momentum-adagrad-and-adadelta/#Adam_8211_description</a></br>
   <a href="https://arxiv.org/pdf/1701.05957.pdf">8: https://arxiv.org/pdf/1701.05957.pdf</a></br>
   <a href="https://arxiv.org/abs/1702.00403">9: https://arxiv.org/abs/1702.00403 </a></br>
+  <a href="https://papers.nips.cc/paper/5485-deep-convolutional-neural-network-for-image-deconvolution.pdf">9: https://papers.nips.cc/paper/5485-deep-convolutional-neural-network-for-image-deconvolution.pdf</a></br>
 </p>
       </section>
     </div>
