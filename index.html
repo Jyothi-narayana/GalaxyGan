@@ -28,11 +28,11 @@
       <section id="main_content">
         
 <p>Humans learn by observing and experiencing the physical world. Our brains are very good at prediction and aggregation - if shown 10 different kind of pens, and if presented with a different pen, we can easily identify it as a pen. If asked to imagine a pen, we would imagine one which may not look exactly like any of the ones seen in the past but would still can be classified as a legitimate pen. This task of learning features for a category is one of the prime goals of Machine Learning today. It is not restricted to just images, but can be extended to any form of media like audio, print etc. </p>
-<p>Adversarial networks have recently surfaced as a new way to train machines to generate data which is similar to the observed data in the world simply by observing it. This model, popularly known as Generative Adversarial Network (GAN), was proposed and published by Ian Goodfellow in 2014 *0 todo: refernce to paper*. GANs have produced great results in unsupervised and semisupervised learning domain *1 todo: refernce to paper*. Through an innovative combination of computational graphs and game theory they showed that, given enough modeling power, two models fighting against each other would be able to co-train through plain old backpropagation. </p>
+<p>Adversarial networks have recently surfaced as a new way to train machines to generate data which is similar to the observed data in the world simply by observing it. This model, popularly known as Generative Adversarial Network (GAN), was proposed and published by Ian Goodfellow in 2014 <a href="#references">[1]</a>. GANs have produced great results in unsupervised and semisupervised learning domain <a href="#references">[2]</a>. Through an innovative combination of computational graphs and game theory they showed that, given enough modeling power, two models fighting against each other would be able to co-train through plain old backpropagation. </p>
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Architecture</h3>
 
-<p>So how exactly do they work? The two primary components are Generator (G) and Discriminator (D). D is trained to discriminate between real data and fake data. Here real data refers to the real world data in training and fake data is the data produced by G. *Add going back to introduction example*.Both G and D are multilayer perceptron networks. With this framework, both are trained to be better at their job through back propogation and once trained, G is now able to produce data which is very similar to the training data. D is much easier to train than G, more on it below. The input to G can be anything, there have been experiments where a vector of random numbers have been used to produce an image. This truly proves that G has learnt the features of the data. Hence, a GAN consists of 5 main components *todo: add figure with 5 components*:
+<p>So how exactly do they work? The two primary components are Generator (G) and Discriminator (D). D is trained to discriminate between real data and fake data. Here real data refers to the real world data in training and fake data is the data produced by G.Both G and D are multilayer perceptron networks. With this framework, both are trained to be better at their job through back propogation and once trained, G is now able to produce data which is very similar to the training data. D is much easier to train than G, more on it below. The input to G can be anything, there have been experiments where a vector of random numbers have been used to produce an image. This truly proves that G has learnt the features of the data. Hence, a GAN consists of 5 main components:
 <ul>
   <li>T, the real data</li>
   <li>G, the generator</li>
@@ -40,6 +40,10 @@
   <li>R, the random noise which is the input to G</li>
   <li>A, the training loop which trains the models G and D make each better</li>
 </ul>
+<figure>
+  <img src="./images/gan_arch.jpg" alt="GAN architecture"/>
+  <figcaption>Figure: GAN architecture showing 5 components</figcaption>
+</figure>
 Before delving into the implementation and applications, it's essential that one understands the Mathematics behind it. Let the data in T be represented by <MATH>t</MATH>. The aim is to now learn <MATH>p<sub>q</sub></MATH> which is the disctribution of G. But, there is a prior noise which is associated with this, say <MATH>p<sub>z</sub></MATH>, as defined by R. <MATH>G(z; &#952<sub>g</sub>)</MATH> is now the function for the perceptron network for G where <MATH>&#952<sub>g</sub></MATH> is the set of parameters or weights. Let <MATH>D(x; &#952<sub>d</sub>)</MATH> represent the perceptron network for D where <MATH>D(x)</MATH> represents the probability that x is part of the real data <MATH>t</MATH> rather than <MATH>p<sub>g</sub></MATH>. The loss function is now defined to maximize D i.e make D better at telling the difference between real and fake data generated by G. This is done in 2 ways:
 <ul>
   <li>maximizing <MATH>D(x)</MATH> over <MATH>p<sub>t</sub></MATH></li>
@@ -47,19 +51,19 @@ Before delving into the implementation and applications, it's essential that one
 </ul> 
 Using log scale, we can define the reward/value function (in the context of reinforcement learning) as: </br>
 <img src="./images/GAN_ValueFunction.png" /></br>
-As shown in *add reference to 0*, for a fixed <MATH>G</MATH>, the optimum value of <MATH>D(x)</MATH> is given by:</br>
+As shown in <a href="#references">[1]</a>, for a fixed <MATH>G</MATH>, the optimum value of <MATH>D(x)</MATH> is given by:</br>
 <img class= "two-line" src="./images/opD.png"></br>
 Further the author proves that for <MATH>V(G, D)</MATH> to achieve it's global optimum, <MATH>p<sub>g</sub> = p<sub>data</sub> </MATH>. Putting it together, at the global optimum, <MATH>D<sup>*</sup><sub>G</sub> = 1/2</MATH>, which means that the G at this point is able to generate data which D is not able to differentiate from orginal data. 
 <MATH>D</MATH> is trained using stochastic gradient <b>ascent</b>(since we are <MATH>max D </MATH>) while <MATH>G</MATH> is trained using stochastic gradient <b>descent</b>. </br>
 </p>
 
 <h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Optimizations</h3>
-<p> GAN is considered to be one of the most popular approaches to generative modeling, alongside Fully Visible Belief Network (FVBN) and variational autoencoders *todo: add reference to 5**Add links to posts defining the architectuer of FVBN and VA*. One of the advantages of GAN over FVBN is that it can generate data parallely whereas FVBN can only generate it sequentially *research on FVBN to see if they can be parallelized*. But at the same time, GANs suffer from a new disadvantage: training them requires finding the Nash equilibrium of a (adversarial) game, which is more difficult than solving a loss function. The computational complexity belongs to a subclass of NP called PPAD *add reference to 6*. </br>
+<a id="optimizations" class="anchor" href="#optimizations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Optimizations</h3>
+<p> GAN is considered to be one of the most popular approaches to generative modeling, alongside Fully Visible Belief Network (FVBN) and variational autoencoders <a href="#references">[6]</a>. One of the advantages of GAN over FVBN is that it can generate data parallely whereas FVBN can only generate it sequentially. But at the same time, GANs suffer from a new disadvantage: training them requires finding the Nash equilibrium of a (adversarial) game, which is more difficult than solving a loss function. The computational complexity belongs to a subclass of NP called PPAD <a href="#references">[7]</a>. </br>
 Multiple optimization techniques have been proposed and shown to have practical significance in reducing the training time. Few of them which have helped me personally are discussed below.</br>
 <ol>
 <li>
-<h4>DCGAN</h4><p>These are the models where instead of trainning a multilayer percepron architecture, a convolutional network is employed. The pooling layers are replaced by strided convolutions in generators and fractional-straided convolutions for generators. One of the first positive results for this architecture was published in *add refernce to 2*. This architecture has resulted in stable training across a range of datasets and allowed for training higher resolution and deeper generative networks. </br>
+<h4>DCGAN</h4><p>These are the models where instead of trainning a multilayer percepron architecture, a convolutional network is employed. The pooling layers are replaced by strided convolutions in generators and fractional-straided convolutions for generators. One of the first positive results for this architecture was published in <a href="#references">[3]</a>. This architecture has resulted in stable training across a range of datasets and allowed for training higher resolution and deeper generative networks. </br>
 <figure>
   <img src="./images/DCGAN_generator.png" alt="DCGAN generator example architecture"/>
   <figcaption>Figure 1: Generator for DCGAN </figcaption>
@@ -67,10 +71,10 @@ Multiple optimization techniques have been proposed and shown to have practical 
 </p>
 </li>
 <li>
-<h4>ReLU as the activation function</h4><p>This was another modification proposed in *add reference to 2*. The activation in every layer except the output, which uses tanh. All the layers in discriminator use LeakyReLU activation. This is to avoid sharp gradients which makes GAN unstable.</p></br>
+<h4>ReLU as the activation function</h4><p>This was another modification proposed in <a href="#references">[3]</a>. The activation in every layer except the output, which uses tanh. All the layers in discriminator use LeakyReLU activation. This is to avoid sharp gradients which makes GAN unstable.</p></br>
 </li>
 <li>
-<h4>Adam Optimizer</h4><p>Again a useful trick proposed in *add reference to 2*, Adam optimizer has a big moment in minimizing error and can be used for both G and D. A good comparison of different optimizors for different network architectures is provided in *add reference to 7*</p></br>
+<h4>Adam Optimizer</h4><p>Again a useful trick proposed in <a href="#references">[3]</a>, Adam optimizer has a big moment in minimizing error and can be used for both G and D. A good comparison of different optimizors for different network architectures is provided in <a href="#references">[8]</a></p></br>
 </li>
 <li>
 <h4>Dropouts in G in both train and test phase</h4><p>Using this results in better optimization. Using it in D makes it less prone to mistakes the generator can exploit instead of learning the actual data distribution.</p></br>
@@ -101,11 +105,11 @@ Multiple optimization techniques have been proposed and shown to have practical 
   </br>
 </p>
 <p>
-  A particular application of GANs which recently gained popularity is denoising of images. Relevant work in this, like *site references *, have shown promising results. One of the coolest application of GANs is presented by the authors of *add reference to GGAN*: recovering the features from astronomical images would help physicists to study existing data sets of astrophysical objects. I wouldn't be surprised if they were to discover new spcaial objects with these higher resolution images. </br>
-  The model used to achieve this feat is simple and the implementation employs all the optimizations *link to optimization section3*. It consists of
+  A particular application of GANs which recently gained popularity is denoising of images. Relevant work in this, like <a href="#references">[9]</a> and <a href="#references">[10]</a>, have shown promising results. One of the coolest application of GANs is presented by the authors of <a href="#references">[10]</a>: recovering the features from astronomical images would help physicists to study existing data sets of astrophysical objects. I wouldn't be surprised if they were to discover new spcaial objects with these higher resolution images. </br>
+  The model used to achieve this feat is simple and the implementation employs all the optimizations as <a href="#optimizations">above</a>. It consists of
   <ul>
     <li>
-      T: 4,550 images of galaxies from the Sloan Digital Sky Survey Data Release 12 (York et al. 2000; Alam et al. 2015) *add refernce from the paper of the dataset* in the redshift range 0:01 < z < 0:02
+      T: 4,550 images of galaxies from the Sloan Digital Sky Survey Data Release 12 <a href="#references">[12]</a> in the redshift range 0:01 < z < 0:02
     </li>
     <li>
       G: a convolutional followed by a deconvolutional neural network
@@ -124,7 +128,7 @@ Multiple optimization techniques have been proposed and shown to have practical 
     <img src="./images/ggan.png" alt="DCGAN generator example architecture"/>
     <figcaption>Figure 2: GAN architecture used for learning features from astrophysical objects</figcaption>
   </figure>
-  I used a similar model with modifications in T, used only 97 images and A, no cross validation with 87 training and 10 test images. Figure 3 *add reference to figure* shows the gradual change in image quality over 16 iterations. </br>
+  I used a similar model with modifications in T, used only 97 images and A, no cross validation with 87 training and 10 test images. Figure 3 shows the gradual change in image quality over 16 iterations. </br>
   <figure>
     <img src="./images/final_iteration.png" alt="Generated image VS Degraded Input VS Original Input"/>
     <figcaption>Figure 3: Generated image VS Degraded Input VS Original Input over succeeding iterations. The degraded image and the original image remain the same over the iterations, they have been added to give a better comparison. Only the first column changes over iterations, showing that the generator is able to produce more noise free image over the training period.</figcaption>
@@ -133,29 +137,32 @@ Multiple optimization techniques have been proposed and shown to have practical 
     <img src="./images/final_many.png" alt="Generated image VS Degraded Input VS Original Input"/>
     <figcaption>Figure 4: Generated image VS Degraded Input VS Original Input at iteration # 14.</figcaption>
   </figure>
-  I also plotted the Peak Signal Noise Ratio(PSNR) values over the 16 iterations. PSNR is a popular quantitative measure for image recovery (Xu et al. 2014) *add reference*.
+  I also plotted the Peak Signal Noise Ratio(PSNR) values over the 16 iterations. PSNR is a popular quantitative measure for image recovery.
   <figure>
     <img src="./images/plot.png" alt="Mean PSNR of GAN recovered VS Original Image"/>
     <figcaption>Figure 5: Mean PSNR of GAN recovered VS Original Image</figcaption>
   </figure>
-</p>
-<p>
-
+  The images in Figure 3 shows how the network gradually learns to denoise the data from the input noisy data. Figure 4 shows a set of images generated by G midway in the process of training. An intriging observation are the vertical lines which appear in the images. On further research, the images generated bythe generator in the initial iterations have boxes. This I believe is due to the convolution and deconvolution which happens in the network. Figure 5 further supports the gradual learning of the network (PSNR is expected to increase).  
 </p>
 <h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h3>
+<a id="Closing remoarks" class="anchor" href="#conclusion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conclusion</h3>
+<p>
+  GANs have many wide spread applications, an unexplored application in a corporate setting is generating fake data which is very close to the real data which can be shared with third parties who want to design models for the corporation. For example, most of the medical data is not open for public use because it contains private patient data which cannot be shared with coputer engineers who would like to analyze the data to find trends in them. But with GANs, artificial data which is similar to the real data can be produced and shared widely. Though they are immensly powerful, GANs still require many optimization techniques which indicates that there could be something simpler in the heart of it which can be used instead. 
+</p>
+<h3>
+<a id="references" class="anchor" href="#references" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h3>
 <p> 
-  <a href="https://arxiv.org/pdf/1406.2661v1.pdf">0: https://arxiv.org/pdf/1406.2661v1.pdf </a></br>
-  <a href="https://arxiv.org/abs/1511.06390">1: https://arxiv.org/abs/1511.06390</a></br>
-  <a href="https://arxiv.org/pdf/1511.06434v2.pdf">2: https://arxiv.org/pdf/1511.06434v2.pdf</a></br>
-  <a href="https://github.com/soumith/ganhacks">3: https://github.com/soumith/ganhacks</a></br>
-  <a href="https://arxiv.org/abs/1702.00403">4: https://arxiv.org/abs/1702.00403</a></br>
-  <a href="https://arxiv.org/pdf/1701.00160.pdf">5: https://arxiv.org/pdf/1701.00160.pdf</a></br>
-  <a href="https://people.csail.mit.edu/costis/simplified.pdf">6: https://people.csail.mit.edu/costis/simplified.pdf</a></br>
-  <a href="http://int8.io/comparison-of-optimization-techniques-stochastic-gradient-descent-momentum-adagrad-and-adadelta/#Adam_8211_description">7: http://int8.io/comparison-of-optimization-techniques-stochastic-gradient-descent-momentum-adagrad-and-adadelta/#Adam_8211_description</a></br>
-  <a href="https://arxiv.org/pdf/1701.05957.pdf">8: https://arxiv.org/pdf/1701.05957.pdf</a></br>
-  <a href="https://arxiv.org/abs/1702.00403">9: https://arxiv.org/abs/1702.00403 </a></br>
-  <a href="https://papers.nips.cc/paper/5485-deep-convolutional-neural-network-for-image-deconvolution.pdf">9: https://papers.nips.cc/paper/5485-deep-convolutional-neural-network-for-image-deconvolution.pdf</a></br>
+  <a href="https://arxiv.org/pdf/1406.2661v1.pdf">[1] Goodfellow, Ian, et al. "Generative adversarial nets." Advances in neural information processing systems. 2014.</a></br>
+  <a href="https://arxiv.org/abs/1511.06390">[2] Springenberg, Jost Tobias. "Unsupervised and semi-supervised learning with categorical generative adversarial networks." arXiv preprint arXiv:1511.06390 (2015).</a></br>
+  <a href="https://arxiv.org/pdf/1511.06434v2.pdf">[3] Radford, Alec, Luke Metz, and Soumith Chintala. "Unsupervised representation learning with deep convolutional generative adversarial networks." arXiv preprint arXiv:1511.06434 (2015).</a></br>
+  <a href="https://github.com/soumith/ganhacks">[4] GAN hacks</a></br>
+  <a href="https://arxiv.org/pdf/1701.00160.pdf">[6] Goodfellow, Ian. "NIPS 2016 Tutorial: Generative Adversarial Networks." arXiv preprint arXiv:1701.00160 (2016).</a></br>
+  <a href="https://people.csail.mit.edu/costis/simplified.pdf">[7] Daskalakis, Constantinos, Paul W. Goldberg, and Christos H. Papadimitriou. "The complexity of computing a Nash equilibrium." SIAM Journal on Computing 39.1 (2009): 195-259.</a></br>
+  <a href="http://int8.io/comparison-of-optimization-techniques-stochastic-gradient-descent-momentum-adagrad-and-adadelta/#Adam_8211_description">[8] Optimization techniques comparison in Julia: SGD, Momentum, Adagrad, Adadelta, Adam</a></br>
+  <a href="https://arxiv.org/pdf/1701.05957.pdf">[9] Zhang, He, Vishwanath Sindagi, and Vishal M. Patel. "Image De-raining Using a Conditional Generative Adversarial Network." arXiv preprint arXiv:1701.05957 (2017).</a></br>
+  <a href="https://arxiv.org/abs/1702.00403">[10] Schawinski, Kevin, et al. "Generative Adversarial Networks recover features in astrophysical images of galaxies beyond the deconvolution limit." arXiv preprint arXiv:1702.00403 (2017).</a></br>
+  <a href="https://papers.nips.cc/paper/5485-deep-convolutional-neural-network-for-image-deconvolution.pdf">[11] Xu, Li, et al. "Deep convolutional neural network for image deconvolution." Advances in Neural Information Processing Systems. 2014.</a></br>
+  <a href="http://adsabs.harvard.edu/abs/2000AJ....120.1579Y">[12] York D. G., et al., 2000</a></br>
 </p>
       </section>
     </div>
